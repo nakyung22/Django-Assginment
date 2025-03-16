@@ -8,3 +8,8 @@ __pycache__/
 ../lecture/
 ../pyenv-test/
 ../pyenv-test2/
+../*
+chapter_02/
+lecture/
+pyenv-test/
+pyenv-test2/
