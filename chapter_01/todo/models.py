@@ -1,6 +1,10 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 
+User = get_user_model() # 추가된 부분
+
 class Todo(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE) # 추가된 부분
     title = models.CharField(max_length=50)
     description = models.TextField()
     start_date = models.DateField()
