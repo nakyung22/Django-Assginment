@@ -11,7 +11,7 @@ from django.urls import reverse
 from todo.forms import TodoUpdateForm, TodoForm
 from todo.models import Todo
 
-# @login_required
+@login_required
 def todo_list(request):
     todo_list = Todo.objects.filter(user=request.user).order_by('created_at')
     q = request.GET.get('q') # GET 요청으로부터 q에 담긴 쿼리파라미터를 가져옴
@@ -23,6 +23,7 @@ def todo_list(request):
     page_obj = paginator.get_page(page_number) # 가져온 페이지 숫자를 이용해서 페이지에 대한 오브젝트를 가져옵니다.
 
     context = {'page_obj': page_obj}
+    print(page_obj)
     return render(request, 'todo/todo_list.html', context)
 
 def todo_info(request, todo_id):
