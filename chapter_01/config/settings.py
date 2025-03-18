@@ -11,21 +11,34 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import json
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+with open(BASE_DIR / '.secret_config' / 'secret.json' ) as f:
+    secret_config_str = f.read()
+
+
+SECRET = json.loads(secret_config_str)
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-dy915^a+_bm(&ik3rt_^7^eyk+^pox5vxznz^&f7q(q8tk8zq!'
+SECRET_KEY = SECRET['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # 기본 설정
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = False  # HTTPS 사용 시 True로 설정
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 3600  # 1시간
 
 
 # Application definition
@@ -181,3 +194,13 @@ SUMMERNOTE_CONFIG = {
 
     'attachment_absolute_uri': True,
 }
+
+AUTH_USER_MODEL = 'users.User'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = SECRET['EMAIL']['USER']
+EMAIL_HOST_PASSWORD = SECRET['EMAIL']['PASSWORD']
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

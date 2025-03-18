@@ -13,3 +13,5 @@ chapter_02/
 lecture/
 pyenv-test/
 pyenv-test2/
+
+.secret_config/*
