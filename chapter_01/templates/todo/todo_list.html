@@ -1,3 +1,5 @@
+<!-- todo_list.html -->
+
 {% extends 'todo/base.html' %}
 {% block content %}
 <style>
@@ -8,30 +10,12 @@
         padding: 20px;
     }
     .container {
-        max-width: 600px;
+        max-width: 40vw;
         margin: auto;
         background: #fff;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-        text-align: center;
-        color: #333;
-    }
-    .todo-list-item {
-        padding: 10px;
-        margin: 5px 0;
-        background: #eaeaea;
-        border-radius: 5px;
-        transition: background 0.3s;
-    }
-    .todo-list-item:hover {
-        background: #d4d4d4;
-    }
-    a {
-        text-decoration: none;
-        color: #333;
     }
     .pagination p {
         color: gray;
@@ -55,18 +39,29 @@
         {% endif %}
         <button class="btn btn-success" onclick="location.href='{% url 'cbv_todo_create' %}'">생성하기</button>
     </div>
-    <form method="GET" class="mb-3">
         <div class="input-group">
             <input type="text" class="form-control" placeholder="제목 또는 내용을 입력하세요." name="q" value="{% if request.GET.q %}{{ request.GET.q }}{% endif %}">
             <button class="btn btn-primary" type="submit">Search</button>
         </div>
+    <form method="GET" class="mb-3">
     </form>
-    <ul class="list-unstyled">
+    <div class="list-group mb-3">
         {% for todo in page_obj.object_list %}
-            <li class="todo-list-item"><a href="{% url 'cbv_todo_info' todo.id %}">[{{ todo.user.username }}] {{ todo.title }}</a></li>
+            {% if todo.is_completed %}
+                <div class="list-group-item list-group-item-action">
+                    <img class="img-thumbnail" src="{{ todo.thumbnail.url }}" alt="썸네일이미지" style="width: 100px; height: 100px; object-fit: contain;">
+                    <a class="text-decoration-none text-black" href="{% url 'cbv_todo_info' todo.id %}">[{{ todo.user.username }}]{{ todo.title }} (Completed)</a>
+                </div>
+            {% else %}
+                <div class="list-group-item list-group-item-action">
+                    <img class="img-thumbnail" src="{{ todo.thumbnail.url }}" alt="썸네일이미지" style="width: 100px; height: 100px; object-fit: contain;">
+                    <a class="text-decoration-none text-black" href="{% url 'cbv_todo_info' todo.id %}">[{{ todo.user.username }}] {{ todo.title }}</a>
+                </div>
+            {% endif %}
         {% endfor %}
-    </ul>
+    </div>
     {% include 'todo/pagination.html' %}
     {% endif %}
 </div>
 {% endblock %}
+

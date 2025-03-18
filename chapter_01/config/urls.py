@@ -17,7 +17,10 @@ Including another URLconf
 from xml.etree.ElementInclude import include
 
 from django.contrib import admin
+from django.conf.urls.static import static
 from django.urls import path, include
+
+from config import settings
 from todo.views import todo_list, todo_info, todo_create, todo_update, todo_delete
 from users import views as user_views
 from todo import views
@@ -34,4 +37,8 @@ urlpatterns = [
     path('accounts/login/', user_views.login, name='login'),
     path('accounts/signup/', user_views.sign_up, name='signup'),
     path('cbv/', include('todo.urls')),
+    path('summernote/', include('django_summernote.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
