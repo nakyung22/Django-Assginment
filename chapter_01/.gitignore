@@ -16,3 +16,5 @@ pyenv-test2/
 
 # 비밀 설정 폴더 숨기기
 .secret_config/
+
+.venv/
